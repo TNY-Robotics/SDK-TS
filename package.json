@@ -1,6 +1,6 @@
 {
   "name": "@tny-robotics/sdk",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Typescript SDK for TNY-Robotics robots",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -16,9 +16,17 @@
     "url": "git+https://github.com/TNY-Robotics/SDK-TS.git"
   },
   "files": [ "dist" ],
-  "keywords": [],
+  "keywords": [
+    "tny-360",
+    "tny-robotics",
+    "robot",
+    "robotics",
+    "sdk",
+    "websocket",
+    "esp32"
+  ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "type": "commonjs",
   "bugs": {
     "url": "https://github.com/TNY-Robotics/SDK-TS/issues"
