@@ -134,8 +134,12 @@ export class Float32 implements DataType {
         if (array.length < offset + 4) {
             throw new Error('Invalid byte array length');
         }
-        const uint8Array = array.slice(offset, offset + 4);
-        const floatArray = new Float32Array(uint8Array.buffer);
+        const invertedArray = new Uint8Array(4);
+        invertedArray[0] = array[offset];
+        invertedArray[1] = array[offset + 1];
+        invertedArray[2] = array[offset + 2];
+        invertedArray[3] = array[offset + 3];
+        const floatArray = new Float32Array(invertedArray.buffer, offset, 1);
         return new Float32(floatArray[0]);
     }
 }
