@@ -109,10 +109,25 @@ export class Protocol {
         };
     }
 
-    private onMessage(data: WebSocket.Data) {
-        const bytes = new Uint8Array(data as ArrayBuffer);
+    private async onMessage(data: WebSocket.Data) {
+        let bytes: Uint8Array;
+        if (data instanceof Blob) { // On web platform
+            const reader = new FileReader();
+            bytes = new Uint8Array(await new Promise<ArrayBuffer>((resolve, reject) => {
+                reader.onload = () => { resolve(reader.result as ArrayBuffer); };
+                reader.onerror = () => { reject(reader.error); };
+                reader.readAsArrayBuffer(data);
+            }));
+        }
+        else if (data instanceof Uint8Array) { // on node platform
+            bytes = data;
+        }
+        else {
+            bytes = new Uint8Array(data as ArrayBuffer);
+        }
+        
         if (bytes.length < 8) {
-            console.warn('Received invalid message');
+            console.warn('Received invalid message (length < 8)');
             return;
         }
 
