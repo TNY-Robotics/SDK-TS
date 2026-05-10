@@ -134,12 +134,12 @@ export class Float32 implements DataType {
         if (array.length < offset + 4) {
             throw new Error('Invalid byte array length');
         }
-        const invertedArray = new Uint8Array(4);
-        invertedArray[0] = array[offset];
-        invertedArray[1] = array[offset + 1];
-        invertedArray[2] = array[offset + 2];
-        invertedArray[3] = array[offset + 3];
-        const floatArray = new Float32Array(invertedArray.buffer, offset, 1);
+        const floatArray = new Float32Array(1);
+        const uint8Array = new Uint8Array(floatArray.buffer);
+        uint8Array[0] = array[offset];
+        uint8Array[1] = array[offset + 1];
+        uint8Array[2] = array[offset + 2];
+        uint8Array[3] = array[offset + 3];
         return new Float32(floatArray[0]);
     }
 }
@@ -217,7 +217,7 @@ export class StringType implements DataType {
         let string = '';
         for (let i = 0; i < length; i++)
         {
-            string += String.fromCharCode(offset + 2 + i);
+            string += String.fromCharCode(array[offset + 2 + i]);
         }
         return new StringType(string);
     }
