@@ -178,6 +178,10 @@ export class Protocol {
         });
     }
 
+    public get connected() {
+        return this.ws?.readyState === WebSocket.OPEN;
+    }
+
     public async sendRequest(moduleId: number, actionId: number, data: Uint8Array = new Uint8Array(0), flags: Flag = Flag.None) {
         return new Promise<Uint8Array | void>((resolve, reject) => {
             if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {

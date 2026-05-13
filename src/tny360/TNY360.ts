@@ -70,6 +70,10 @@ export class TNY360 {
         }
         await this._protocol.disconnect();
     }
+    
+    public get connected() {
+        return this._protocol.connected;
+    }
 
     public get latency() {
         return this._latency;
