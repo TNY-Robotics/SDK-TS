@@ -132,6 +132,7 @@ export class Protocol {
         }
 
         const header = this.parseMessageHeader(bytes);
+
         if (header.type === Type.Response) {
             const pending = this.pendingRequests.get(header.msgId);
             if (pending) {
@@ -195,11 +196,10 @@ export class Protocol {
             message.set(data, header.length);
             this.ws.send(message);
 
-            // if (flags & Flag.RequireAck) {
-            //     this.pendingRequests.set(msgId, new PendingRequest(resolve, reject));
-            // }
-            // else resolve();
-            this.pendingRequests.set(msgId, new PendingRequest(resolve, reject));
+            if (flags & Flag.RequireAck) {
+                this.pendingRequests.set(msgId, new PendingRequest(resolve, reject));
+            }
+            else resolve();
         });
     }
 }

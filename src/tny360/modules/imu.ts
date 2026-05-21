@@ -41,11 +41,10 @@ export class IMUModule extends Module {
     }
 
     public async getOrientation() {
-        return await this.sendAction(0x03, [], [new Float32(), new Float32(), new Float32(), new Float32()]).then(res => ({
-            x: res?.[1] as number,
-            y: res?.[2] as number,
-            z: res?.[3] as number,
-            w: res?.[0] as number,
+        return await this.sendAction(0x03, [], [new Float32(), new Float32(), new Float32()]).then(res => ({
+            x_rad: res?.[0] as number,
+            y_rad: res?.[1] as number,
+            z_rad: res?.[2] as number,
         }));
     }
 

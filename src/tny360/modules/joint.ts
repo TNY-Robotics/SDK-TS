@@ -54,4 +54,17 @@ export class JointModule extends Module {
     public async getEstimatedAngle(id: JointId) {
         return await this.sendAction(0x06, [new UInt8(id)], [new Float32()]).then(res => res?.[0] as number);
     }
+
+    public async setJointAngles(angles: number[], waitResponse = false) {
+        if (angles.length !== 14) {
+            throw new Error("Invalid angles array length. Expected 14.");
+        }
+        const data = angles.map((angle, index) => new Float32(angle));
+        return await this.sendAction(0x07, data, [], waitResponse ? Flag.RequireAck : Flag.None);
+    }
+
+    public async getJointAngles() {
+        const data = Array.from({ length: 14 }, () => new Float32());
+        return await this.sendAction(0x08, [], data).then(res => res as number[]);
+    }
 }
