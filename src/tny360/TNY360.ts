@@ -11,6 +11,7 @@ import { IMUModule, IMUCalibrationState } from "./modules/imu";
 import { WiFiModule } from "./modules/wifi";
 import { PowerModule } from "./modules/power";
 import { ADCModule } from "./modules/adc";
+import { I2CModule } from "./modules/i2c";
 
 export {
     AutoLifeFlags,
@@ -40,6 +41,7 @@ export class TNY360 {
     public imu: IMUModule;
     public power: PowerModule;
     public adc: ADCModule;
+    public i2c: I2CModule;
     public wifi: WiFiModule;
 
     constructor(ip: string = '192.168.4.1', port: number = 5621) {
@@ -55,6 +57,7 @@ export class TNY360 {
         this.imu = new IMUModule(this._protocol);
         this.power = new PowerModule(this._protocol);
         this.adc = new ADCModule(this._protocol);
+        this.i2c = new I2CModule(this._protocol);
         this.wifi = new WiFiModule(this._protocol);
     }
 
