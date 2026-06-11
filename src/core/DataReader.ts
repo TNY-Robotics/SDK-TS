@@ -13,7 +13,7 @@ export class DataReader {
             throw new Error('Not enough data to read');
         }
         const value = type.fromBytes(this.buffer, this.offset);
-        this.offset += type.size();
+        this.offset += value.size();
         return value;
     }
 }

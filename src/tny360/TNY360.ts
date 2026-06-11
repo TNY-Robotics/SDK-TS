@@ -1,12 +1,12 @@
 import { Protocol } from "../core/Protocol";
 
-import { SystemModule, AutoLifeFlags, AutoLifeLevel } from "./modules/system";
+import { SystemModule, AutoLifeFlags, AutoLifeLevel, LogLevel, LogLine } from "./modules/system";
 import { ProtocolModule } from "./modules/protocol";
 import { GaitModule, GaitType } from "./modules/gait";
 import { BodyModule, BodyJointFlag } from "./modules/body";
 import { LegModule, LegId, LegJointFlag } from "./modules/leg";
 import { JointModule, JointId } from "./modules/joint";
-import { MotorModule, MotorCalibrationState, MotorId } from "./modules/motor";
+import { MotorModule, MotorCalibrationState, MotorCalibrationData, MotorId } from "./modules/motor";
 import { IMUModule, IMUCalibrationState } from "./modules/imu";
 import { WiFiModule } from "./modules/wifi";
 import { PowerModule } from "./modules/power";
@@ -22,8 +22,11 @@ export {
     LegJointFlag,
     JointId,
     MotorCalibrationState,
+    MotorCalibrationData,
     MotorId,
-    IMUCalibrationState
+    IMUCalibrationState,
+    LogLevel,
+    LogLine,
 }
 
 export class TNY360 {

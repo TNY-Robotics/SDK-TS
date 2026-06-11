@@ -208,11 +208,11 @@ export class StringType implements DataType {
 
     fromBytes(array: Uint8Array, offset: number): StringType {
         if (array.length < offset + 2) {
-            throw new Error('Invalid byte array length');
+            throw new Error('Invalid byte array length (missing length prefix)');
         }
         const length = array[offset] | (array[offset + 1] << 8);
         if (array.length < offset + 2 + length) {
-            throw new Error('Invalid byte array length');
+            throw new Error('Invalid byte array length (incomplete string)');
         }
         let string = '';
         for (let i = 0; i < length; i++)
