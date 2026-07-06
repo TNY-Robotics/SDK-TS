@@ -8,10 +8,12 @@ import { LegModule, LegId, LegJointFlag } from "./modules/leg";
 import { JointModule, JointId } from "./modules/joint";
 import { MotorModule, MotorCalibrationState, MotorCalibrationData, MotorId } from "./modules/motor";
 import { IMUModule, IMUCalibrationState } from "./modules/imu";
-import { WiFiModule } from "./modules/wifi";
 import { PowerModule } from "./modules/power";
 import { ADCModule } from "./modules/adc";
 import { I2CModule } from "./modules/i2c";
+import { WiFiModule } from "./modules/wifi";
+import { ErrorModule, ErrorEvent, ErrorSeverity } from "./modules/error";
+import { DiagnosticModule } from "./modules/diagnostic";
 
 export {
     AutoLifeFlags,
@@ -27,9 +29,15 @@ export {
     IMUCalibrationState,
     LogLevel,
     LogLine,
+    ErrorEvent,
+    ErrorSeverity
 }
 
+type TNY360Event = 'connected' | 'disconnected';
+
 export class TNY360 {
+    private _events: { [K in TNY360Event]: (() => void)[] } = { connected: [], disconnected: [] };
+
     private _protocol: Protocol;
     private _latency: number = 0;
     private _latency_loop?: NodeJS.Timeout;
@@ -46,6 +54,12 @@ export class TNY360 {
     public adc: ADCModule;
     public i2c: I2CModule;
     public wifi: WiFiModule;
+    public error: ErrorModule;
+    public diagnostic: DiagnosticModule;
+
+    private emit(event: TNY360Event) {
+        this._events[event].forEach((listener) => listener());
+    }
 
     constructor(ip: string = '192.168.4.1', port: number = 5621) {
         this._protocol = new Protocol(ip, port);
@@ -62,10 +76,13 @@ export class TNY360 {
         this.adc = new ADCModule(this._protocol);
         this.i2c = new I2CModule(this._protocol);
         this.wifi = new WiFiModule(this._protocol);
+        this.error = new ErrorModule(this._protocol);
+        this.diagnostic = new DiagnosticModule(this._protocol);
     }
 
     public async connect() {
         await this._protocol.connect();
+        this.emit('connected');
         this._latency_loop = setInterval(async () => {
             const start = Date.now();
             try { await this.system.ping(); } catch (e) {}
@@ -81,10 +98,24 @@ export class TNY360 {
             clearInterval(this._latency_loop);
         }
         await this._protocol.disconnect();
+        this.emit('disconnected');
     }
-    
+
+    public on(event: TNY360Event, listener: () => void) {
+        this._events[event].push(listener);
+        return this;
+    }
+
     public get connected() {
         return this._protocol.connected;
+    }
+
+    public get ip() {
+        return this._protocol.ip;
+    }
+
+    public get port() {
+        return this._protocol.port;
     }
 
     public get latency() {

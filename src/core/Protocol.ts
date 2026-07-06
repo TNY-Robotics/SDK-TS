@@ -60,8 +60,8 @@ export class RequestError extends Error {
 
 export class Protocol {
     private ws?: WebSocket;
-    private ip: string;
-    private port: number;
+    private _ip: string;
+    private _port: number;
 
     private msg_id_counter: number = 0;
 
@@ -154,13 +154,21 @@ export class Protocol {
     }
 
     constructor(ip: string, port: number) {
-        this.ip = ip;
-        this.port = port;
+        this._ip = ip;
+        this._port = port;
+    }
+
+    public get ip() {
+        return this._ip;
+    }
+
+    public get port() {
+        return this._port;
     }
 
     public async connect() {
         return new Promise<void>((resolve, reject) => {
-            this.ws = new WebSocket(`ws://${this.ip}:${this.port}`);
+            this.ws = new WebSocket(`ws://${this._ip}:${this._port}`);
             this.ws.onmessage = (event) => { this.onMessage(event.data); };
             this.ws.onopen = () => { resolve(); };
             this.ws.onerror = (err) => { reject(err); };

@@ -222,3 +222,33 @@ export class StringType implements DataType {
         return new StringType(string);
     }
 }
+
+export class ByteArray implements DataType {
+    public readonly value: Uint8Array;
+
+    constructor(value?: Uint8Array) {
+        if (value === undefined) {
+            this.value = new Uint8Array(0);
+            return;
+        }
+        this.value = value;
+    }
+
+    size(): number {
+        return this.value.length;
+    }
+
+    toBytes(): Uint8Array {
+        return this.value;
+    }
+
+    fromBytes(array: Uint8Array, offset: number): ByteArray {
+        if (array.length < offset) {
+            throw new Error('Invalid byte array length');
+        }
+        const length = array.length - offset;
+        const value = new Uint8Array(length);
+        value.set(array.subarray(offset, offset + length));
+        return new ByteArray(value);
+    }
+}
