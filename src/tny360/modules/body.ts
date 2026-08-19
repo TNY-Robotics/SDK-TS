@@ -64,4 +64,12 @@ export class BodyModule extends Module {
             rot_z_rad: res?.[5] as number
         }));
     }
+
+    public async enableSmooth(waitResponse = false) {
+        return await this.sendAction(0x06, [], [new Float32()], waitResponse ? Flag.RequireAck : Flag.None).then(res => res?.[0] as number);
+    }
+
+    public async disableSmooth(waitResponse = false) {
+        return await this.sendAction(0x07, [], [new Float32()], waitResponse ? Flag.RequireAck : Flag.None).then(res => res?.[0] as number);
+    }
 }
