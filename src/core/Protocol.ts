@@ -145,7 +145,7 @@ export class Protocol {
                 this.pendingRequests.delete(header.msgId);
             }
             else {
-                console.warn(`Received response for unknown msgId ${header.msgId}`);
+                // console.warn(`Received response for unknown msgId ${header.msgId}`);
             }
         }
         else {
