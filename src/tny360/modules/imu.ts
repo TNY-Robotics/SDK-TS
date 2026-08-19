@@ -1,4 +1,4 @@
-import { Bool, Float32, UInt8 } from "../../core/DataTypes";
+import { Float32, UInt8 } from "../../core/DataTypes";
 import { Flag } from "../../core/Protocol";
 import { Module } from "./Module";
 
@@ -18,9 +18,9 @@ export class IMUModule extends Module {
 
     public async getAcceleration() {
         return await this.sendAction(0x00, [], [new Float32(), new Float32(), new Float32()]).then(res => ({
-            x_g: res?.[0] as number,
-            y_g: res?.[1] as number,
-            z_g: res?.[2] as number,
+            x_ms2: res?.[0] as number,
+            y_ms2: res?.[1] as number,
+            z_ms2: res?.[2] as number,
         }));
     }
 
