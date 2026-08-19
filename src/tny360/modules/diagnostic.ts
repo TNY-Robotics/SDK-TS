@@ -13,8 +13,8 @@ export class DiagnosticModule extends Module {
         return await this.sendAction(0x00, [], [new Bool()]).then(res => res?.[0] as boolean);
     }
 
-    public async setDiagnosticMode(enabled: boolean, waitResponse: boolean = true) {
-        return await this.sendAction(0x01, [new Bool(enabled)], [], waitResponse ? Flag.RequireAck : Flag.None);
+    public async rebootInDiagnosticMode() {
+        return await this.sendAction(0x01, [], [], Flag.None);
     }
 
     public async checkLED() {
