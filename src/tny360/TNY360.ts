@@ -11,7 +11,7 @@ import { IMUModule, IMUCalibrationState } from "./modules/imu";
 import { PowerModule } from "./modules/power";
 import { ADCModule } from "./modules/adc";
 import { I2CModule } from "./modules/i2c";
-import { WiFiModule } from "./modules/wifi";
+import { WiFiModule, WiFiMode, WiFiState } from "./modules/wifi";
 import { ErrorModule, ErrorEvent, ErrorSeverity } from "./modules/error";
 import { DiagnosticModule } from "./modules/diagnostic";
 
@@ -30,7 +30,9 @@ export {
     LogLevel,
     LogLine,
     ErrorEvent,
-    ErrorSeverity
+    ErrorSeverity,
+    WiFiMode,
+    WiFiState
 }
 
 type TNY360Event = 'connected' | 'disconnected';
